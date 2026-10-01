@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NEC Grievance Portal — Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-dark:#1f6b3a;
+    --green:#2e8b47;
+    --green-light:#43a047;
+    --green-pale:#eaf6ee;
+    --ink:#1b2b22;
+    --muted:#5c6b62;
+    --card:#ffffff;
+    --border:#d7e6dc;
+    --danger:#c0392b;
+    --pending:#b8860b;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(180deg,#f4faf6 0%,#eef7f0 100%);
+    color:var(--ink);
+  }
+  header.site{
+    background:var(--card);
+    border-bottom:4px solid var(--green);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 28px;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .brand{display:flex;align-items:center;gap:14px;}
+  .brand .logo{
+    width:52px;height:52px;border-radius:50%;
+    background:conic-gradient(var(--green-dark),var(--green-light),var(--green-dark));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;
+  }
+  .brand h1{font-size:18px;margin:0;color:var(--green-dark);letter-spacing:.3px;}
+  .brand p{margin:2px 0 0;font-size:12.5px;color:var(--muted);}
+  .contact{display:flex;gap:16px;font-size:12.5px;color:var(--muted);flex-wrap:wrap;align-items:center;}
+  .logout-btn{
+    background:#e0574a;color:#fff;border:none;border-radius:6px;
+    padding:7px 14px;font-size:12.5px;font-weight:600;cursor:pointer;
+  }
+
+  main{max-width:1100px;margin:0 auto;padding:26px 20px 60px;}
+
+  h2.page-title{color:var(--green-dark);font-size:20px;margin:0 0 20px;}
+
+  .tabs{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;}
+  .tab{
+    padding:10px 20px;border-radius:999px;border:1px solid var(--border);
+    background:#fff;color:var(--muted);font-size:13.5px;font-weight:600;cursor:pointer;
+    transition:all .15s;
+  }
+  .tab.active{background:var(--green);color:#fff;border-color:var(--green);}
+  .tab .count{
+    display:inline-block;margin-left:6px;background:rgba(0,0,0,.12);
+    padding:1px 8px;border-radius:999px;font-size:11px;
+  }
+  .tab.active .count{background:rgba(255,255,255,.25);}
+
+  .card-list{display:flex;flex-direction:column;gap:14px;}
+
+  .g-card{
+    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    padding:18px 20px;box-shadow:0 6px 18px rgba(30,70,45,.06);
+  }
+  .g-card-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:10px;margin-bottom:10px;}
+  .g-card-head .gid{font-weight:700;color:var(--green-dark);font-size:15px;}
+  .g-card-head .type{
+    font-size:11.5px;background:var(--green-pale);color:var(--green-dark);
+    padding:3px 10px;border-radius:999px;font-weight:600;
+  }
+  .status-badge{
+    font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;text-transform:uppercase;letter-spacing:.3px;
+  }
+  .status-badge.Pending{background:#fdf3d9;color:var(--pending);}
+  .status-badge.Resolved{background:#e9f7ee;color:var(--green-dark);}
+  .status-badge.Rejected{background:#fdecea;color:var(--danger);}
+
+  .g-card-body{font-size:13px;color:var(--muted);line-height:1.7;}
+  .g-card-body b{color:var(--ink);}
+  .g-card-body .desc{margin-top:8px;color:var(--ink);}
+
+  .g-card-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;}
+  .action-btn{
+    border:none;border-radius:7px;padding:8px 16px;font-size:12.5px;font-weight:600;cursor:pointer;
+    transition:transform .12s;
+  }
+  .action-btn:hover{transform:translateY(-1px);}
+  .action-resolve{background:var(--green);color:#fff;}
+  .action-reject{background:var(--danger);color:#fff;}
+  .finalized-note{font-size:12px;color:var(--muted);font-style:italic;}
+
+  .empty-state{
+    text-align:center;padding:50px 20px;color:var(--muted);font-size:13.5px;
+    background:#fff;border:1px dashed var(--border);border-radius:12px;
+  }
+
+  .loading{text-align:center;padding:40px;color:var(--muted);font-size:13.5px;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="brand">
+    <div class="logo">NEC</div>
+    <div>
+      <h1>National Engineering College</h1>
+      <p>Admin Dashboard — Grievance Redressal Portal</p>
+    </div>
+  </div>
+  <div class="contact">
+    <span id="whoami"></span>
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+</header>
+
+<main>
+  <h2 class="page-title">Grievance Management</h2>
+
+  <div class="tabs">
+    <button class="tab active" data-status="Pending" onclick="switchTab('Pending')">Pending <span class="count" id="countPending">0</span></button>
+    <button class="tab" data-status="Resolved" onclick="switchTab('Resolved')">Resolved <span class="count" id="countResolved">0</span></button>
+    <button class="tab" data-status="Rejected" onclick="switchTab('Rejected')">Rejected <span class="count" id="countRejected">0</span></button>
+    <button class="tab" data-status="All" onclick="switchTab('All')">All <span class="count" id="countAll">0</span></button>
+    <button class="tab" id="downloadBtn" onclick="downloadReport()" style="margin-left:auto;background:#fff;">⬇ Download Report (CSV)</button>
+  </div>
+
+  <div id="listContainer" class="card-list">
+    <div class="loading">Loading grievances...</div>
+  </div>
+</main>
+
+<script>
+const API_BASE = "http://localhost:5000";
+
+// Guard: must be logged in
+if (!sessionStorage.getItem("nec_admin_token")) {
+  window.location.href = "admin-login.html";
+}
+document.getElementById("whoami").textContent = "Logged in as Admin";
+
+function logout() {
+  sessionStorage.removeItem("nec_admin_token");
+  window.location.href = "admin-login.html";
+}
+
+let currentTab = "Pending";
+let allGrievances = [];
+
+async function loadGrievances() {
+  const container = document.getElementById("listContainer");
+  container.innerHTML = '<div class="loading">Loading grievances...</div>';
+  try {
+    const res = await fetch(API_BASE + "/api/grievances");
+    if (!res.ok) throw new Error("Failed to load grievances.");
+    allGrievances = await res.json();
+    updateCounts();
+    renderList();
+  } catch (err) {
+    container.innerHTML = '<div class="empty-state">Could not load grievances. Is the backend running?</div>';
+  }
+}
+
+function updateCounts() {
+  document.getElementById("countPending").textContent = allGrievances.filter(g => g.status === "Pending").length;
+  document.getElementById("countResolved").textContent = allGrievances.filter(g => g.status === "Resolved").length;
+  document.getElementById("countRejected").textContent = allGrievances.filter(g => g.status === "Rejected").length;
+  document.getElementById("countAll").textContent = allGrievances.length;
+}
+
+function switchTab(status) {
+  currentTab = status;
+  document.querySelectorAll(".tab[data-status]").forEach(t => t.classList.toggle("active", t.dataset.status === status));
+  renderList();
+}
+
+function downloadReport() {
+  const url = currentTab === "All"
+    ? API_BASE + "/api/grievances/export"
+    : API_BASE + "/api/grievances/export?status=" + currentTab;
+  window.open(url, "_blank");
+}
+
+function extraFieldsToHtml(extraFields) {
+  if (!extraFields) return "";
+  return Object.values(extraFields).map(f => `<b>${f.label}:</b> ${f.value}`).join(" &nbsp;|&nbsp; ");
+}
+
+function renderList() {
+  const container = document.getElementById("listContainer");
+  const filtered = currentTab === "All" ? allGrievances : allGrievances.filter(g => g.status === currentTab);
+
+  // Newest first
+  const sorted = [...filtered].sort((a, b) => b.gid - a.gid);
+
+  if (sorted.length === 0) {
+    container.innerHTML = '<div class="empty-state">No grievances in this category.</div>';
+    return;
+  }
+
+  container.innerHTML = sorted.map(g => `
+    <div class="g-card">
+      <div class="g-card-head">
+        <div>
+          <span class="gid">GID ${g.gid}</span>
+          <span class="type">${g.userType}</span>
+        </div>
+        <span class="status-badge ${g.status}">${g.status}</span>
+      </div>
+      <div class="g-card-body">
+        <div><b>Name:</b> ${g.name} &nbsp;|&nbsp; <b>Email:</b> ${g.email} &nbsp;|&nbsp; <b>Mobile:</b> ${g.mobile}</div>
+        ${g.department ? `<div><b>Department:</b> ${g.department}</div>` : ""}
+        ${extraFieldsToHtml(g.extraFields) ? `<div>${extraFieldsToHtml(g.extraFields)}</div>` : ""}
+        <div><b>Submitted:</b> ${new Date(g.submittedAt).toLocaleString()}</div>
+        <div class="desc">${g.description}</div>
+        ${g.originalFileName ? `<div style="margin-top:6px;"><b>Attachment:</b> ${g.originalFileName} — <a href="${API_BASE}/uploads/${g.document}" target="_blank" download="${g.originalFileName}" style="color:var(--green-dark);font-weight:600;">⬇ Download</a></div>` : ""}
+      </div>
+      <div class="g-card-actions">
+        ${g.status === "Pending" ? `
+          <button class="action-btn action-resolve" onclick="updateStatus(${g.gid}, 'Resolved')">✓ Resolve</button>
+          <button class="action-btn action-reject" onclick="updateStatus(${g.gid}, 'Rejected')">✕ Reject</button>
+        ` : `<span class="finalized-note">This grievance has been finalized.</span>`}
+      </div>
+    </div>
+  `).join("");
+}
+
+async function updateStatus(gid, status) {
+  if (!confirm(`Mark GID ${gid} as ${status}? This is final and the user will be notified by email.`)) return;
+  try {
+    const res = await fetch(API_BASE + "/api/grievance/" + gid + "/status", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Failed to update status.");
+    await loadGrievances();
+  } catch (err) {
+    alert(err.message || "Something went wrong.");
+  }
+}
+
+loadGrievances();
+</script>
+
+</body>
+</html>

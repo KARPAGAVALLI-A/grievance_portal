@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>NEC Grievance Redressal Portal — Welcome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green-dark:#1f6b3a;
+    --green:#2e8b47;
+    --green-light:#43a047;
+    --green-pale:#eaf6ee;
+    --ink:#1b2b22;
+    --muted:#5c6b62;
+    --card:#ffffff;
+    --border:#d7e6dc;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(180deg,#f4faf6 0%,#eef7f0 100%);
+    color:var(--ink);
+  }
+  header.site{
+    background:var(--card);
+    border-bottom:4px solid var(--green);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 28px;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .brand{display:flex;align-items:center;gap:14px;}
+  .brand .logo{
+    width:52px;height:52px;border-radius:50%;
+    background:conic-gradient(var(--green-dark),var(--green-light),var(--green-dark));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;
+  }
+  .brand h1{font-size:18px;margin:0;color:var(--green-dark);letter-spacing:.3px;}
+  .brand p{margin:2px 0 0;font-size:12.5px;color:var(--muted);}
+  .contact{display:flex;gap:18px;font-size:12.5px;color:var(--muted);flex-wrap:wrap;align-items:center;}
+  .admin-link{
+    display:flex;align-items:center;justify-content:center;
+    width:34px;height:34px;border-radius:8px;
+    background:var(--green);color:#fff;text-decoration:none;
+  }
+  .admin-link svg{width:18px;height:18px;fill:#fff;}
+
+  .campus-banner{
+    height:220px;
+    background:
+      linear-gradient(180deg, rgba(20,60,35,0) 40%, rgba(15,45,28,.55) 100%),
+      linear-gradient(120deg,#3fa25f,#1f6b3a 60%,#144a28);
+    position:relative;
+    overflow:hidden;
+  }
+  .campus-banner::before{
+    content:"";
+    position:absolute;inset:0;
+    background-image:repeating-linear-gradient(90deg, rgba(255,255,255,.06) 0 2px, transparent 2px 40px);
+  }
+  .campus-banner .caption{
+    position:absolute;left:28px;bottom:16px;color:#fff;
+    font-size:13px;letter-spacing:.4px;opacity:.9;
+  }
+
+  main{max-width:920px;margin:0 auto;padding:0 20px 60px;}
+
+  .intro{padding:28px 4px 6px;}
+  .intro h2{color:var(--green-dark);font-size:20px;margin:0 0 12px;}
+  .intro p{font-size:13.5px;line-height:1.7;color:var(--muted);margin:0 0 12px;}
+
+  .panel{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    box-shadow:0 10px 30px rgba(30,70,45,.08);
+    overflow:hidden;
+    margin-bottom:24px;
+  }
+  .panel-head{
+    background:var(--green);
+    color:#fff;
+    padding:14px 22px;
+    font-weight:600;
+    font-size:15px;
+  }
+  .panel-body{padding:20px 22px;}
+
+  .functions-list{margin:0;padding-left:20px;font-size:13.5px;color:var(--muted);line-height:1.9;}
+  .functions-list li::marker{color:var(--green);}
+
+  table.committee{width:100%;border-collapse:collapse;font-size:13px;}
+  table.committee th{
+    text-align:left;background:var(--green-pale);color:var(--green-dark);
+    padding:10px 12px;font-size:12.5px;text-transform:uppercase;letter-spacing:.3px;
+  }
+  table.committee td{padding:10px 12px;border-bottom:1px solid var(--border);color:var(--ink);vertical-align:top;}
+  table.committee tr:last-child td{border-bottom:none;}
+  table.committee td.post{color:var(--muted);white-space:nowrap;}
+
+  .register-cta{
+    background:linear-gradient(120deg, var(--green-dark), var(--green-light));
+    color:#fff;padding:22px;border-radius:14px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    box-shadow:0 10px 30px rgba(31,107,58,.25);
+  }
+  .register-cta .text h3{margin:0 0 4px;font-size:16px;}
+  .register-cta .text p{margin:0;font-size:12.5px;opacity:.9;}
+  .register-cta a{
+    background:#fff;color:var(--green-dark);
+    text-decoration:none;font-weight:600;font-size:14px;
+    padding:11px 24px;border-radius:999px;
+    box-shadow:0 6px 16px rgba(0,0,0,.15);
+    transition:transform .12s;
+    white-space:nowrap;
+  }
+  .register-cta a:hover{transform:translateY(-1px);}
+
+  footer{text-align:center;font-size:12px;color:var(--muted);padding:20px;}
+
+  @media (max-width:640px){
+    table.committee{font-size:12px;}
+    .register-cta{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="brand">
+    <div class="logo">NEC</div>
+    <div>
+      <h1>National Engineering College</h1>
+      <p>K.R.Nagar, Kovilpatti - 628503</p>
+    </div>
+  </div>
+  <div class="contact">
+    <span>✉ principal@nec.edu.in</span>
+    <span>📞 04632-232749</span>
+    <span>📠 04632-227441</span>
+    <a class="admin-link" href="admin-login.html" title="Admin Login">
+      <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 8 1.34 8 4v2H4v-2c0-2.66 5.3-4 8-4zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>
+    </a>
+  </div>
+</header>
+
+<div class="campus-banner">
+  <div class="caption">National Engineering College Campus</div>
+</div>
+
+<main>
+  <div class="intro">
+    <h2>Welcome to NEC's Grievance Redressal Portal</h2>
+    <p>
+      The grievance redressal system of an organization is the gauge to measure its efficiency
+      and effectiveness, as it provides important feedback on the working of the organization.
+      It helps the organization to deliver quality service to the public and other stakeholders
+      in a hassle-free manner and in eliminating the cause of grievances.
+    </p>
+    <p>
+      This portal is intended to undertake the process of attending to the grievances put forward
+      by the students, faculty and stakeholders. Complainants can submit their grievances along
+      with correct contact details during the submission, and a unique file identification number
+      will be assigned.
+    </p>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">Functions of the Committee</div>
+    <div class="panel-body">
+      <ul class="functions-list">
+        <li>To adhere to the standard arbitration procedures of the college and those of AICTE Act 1987(52 of 1987) and AICTE (Establishment of Mechanism for Grievance Redressal) Regulations, 2012 or other such enactments of the AICTE from time to time</li>
+        <li>To receive appeals, through online submissions and send acknowledgement to the complainant</li>
+        <li>To identify the gravity of the appeal into academic, administrative and discipline-oriented</li>
+        <li>To form a sub-committee among them to initiate the redressal operation within 3 days</li>
+        <li>To ascertain the individuals to be involved in the enquiry and shall take appropriate action as deem fit and dispose the redress of grievance</li>
+        <li>To escalate to higher authorities, if the complaint is not resolved and closed within 30 days</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-head">Members of the Committee</div>
+    <div class="panel-body" style="padding:0;">
+      <table class="committee">
+        <thead>
+          <tr><th>Name</th><th>Designation / Department</th><th>Post</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Dr.K.Kalidasa Murugavel</td><td>Principal</td><td class="post">Chairperson</td></tr>
+          <tr><td>Dr. G.S.R.Emil Selvan</td><td>Associate Professor, Thiagarajar College of Engineering, Madurai</td><td class="post">Senior Professor — Affiliating University Member</td></tr>
+          <tr><td>Dr.M.A.Neelakantan</td><td>Sr.Dean(R&D), Prof & Head/S&H</td><td class="post">Senior Faculty</td></tr>
+          <tr><td>Dr.B.Paramasivan</td><td>Dean(SA&IR), Prof/AI&DS</td><td class="post">Senior Faculty</td></tr>
+          <tr><td>Dr.S.Iyahraja</td><td>Prof & Head/Mech</td><td class="post">Senior Faculty</td></tr>
+          <tr><td>Dr.S.Tamil Selvi</td><td>Prof & Head/ECE</td><td class="post">Senior Faculty</td></tr>
+          <tr><td>Dr.V.Gomathi</td><td>Prof & Head/CSE</td><td class="post">Senior Faculty</td></tr>
+          <tr><td>Dr.M.Willjuicelruthayarajan</td><td>Prof & Head/EEE</td><td class="post">Senior Faculty</td></tr>
+          <tr><td>Dr.K.G.Srinivasagan</td><td>Prof & Head/IT</td><td class="post">Senior Faculty</td></tr>
+          <tr><td>Dr.I.Padmanaban</td><td>Prof & Head/Civil</td><td class="post">Senior Faculty</td></tr>
+          <tr><td>Dr.V.Kalaivani</td><td>Prof & Head/AI&DS</td><td class="post">Senior Faculty</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="register-cta">
+    <div class="text">
+      <h3>Ready to submit a grievance?</h3>
+      <p>Fill in your details and description — you'll receive a confirmation email with your GID.</p>
+    </div>
+    <a href="grievance-form.html">Click here to Register →</a>
+  </div>
+</main>
+
+<footer>National Engineering College — Grievance Redressal Portal</footer>
+
+</body>
+</html>

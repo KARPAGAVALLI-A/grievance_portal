@@ -1,0 +1,301 @@
+[
+  {
+    "gid": 12,
+    "userType": "Parent",
+    "name": "SRI SELVA HARITHA S",
+    "email": "sriselvas48@gmai.com",
+    "gender": "Female",
+    "mobile": "7200677057",
+    "department": "",
+    "extraFields": {},
+    "description": "hi selva msg from karpaga",
+    "document": "1784881164991-47073265.pdf",
+    "originalFileName": "AINLP EX 2.pdf",
+    "status": "Resolved",
+    "submittedAt": "2026-07-24T08:19:25.009Z",
+    "statusUpdatedAt": "2026-07-24T08:20:21.942Z"
+  },
+  {
+    "gid": 13,
+    "userType": "Parent",
+    "name": "KALAI SELVAM",
+    "email": "velselvam269@gmail.com",
+    "gender": "Male",
+    "mobile": "9677543210",
+    "department": "",
+    "extraFields": {},
+    "description": "mlhkjgl",
+    "document": null,
+    "originalFileName": null,
+    "status": "Rejected",
+    "submittedAt": "2026-07-24T08:32:21.342Z",
+    "statusUpdatedAt": "2026-07-25T09:13:27.389Z"
+  },
+  {
+    "gid": 14,
+    "userType": "Student",
+    "name": "SRI SELVA HARITHA S",
+    "email": "sriselvas48@gmail.com",
+    "gender": "Female",
+    "mobile": "7200677057",
+    "department": "",
+    "extraFields": {
+      "regNo": {
+        "label": "Reg.No",
+        "value": "71"
+      },
+      "rollNo": {
+        "label": "Roll No",
+        "value": "24104071"
+      },
+      "year": {
+        "label": "Year",
+        "value": "III"
+      },
+      "degree": {
+        "label": "Degree",
+        "value": "B.E"
+      },
+      "course": {
+        "label": "Course",
+        "value": "CSE"
+      }
+    },
+    "description": "hi selva this is grievance portal",
+    "document": "1784970434129-194219322.pdf",
+    "originalFileName": "MVC(MWT) anu.pdf",
+    "status": "Resolved",
+    "submittedAt": "2026-07-25T09:07:14.145Z",
+    "statusUpdatedAt": "2026-07-25T09:08:41.363Z"
+  },
+  {
+    "gid": 15,
+    "userType": "Student",
+    "name": "KARPAGAVALLI A CSE-2024",
+    "email": "24104072@nec.edu.in",
+    "gender": "Female",
+    "mobile": "8754308310",
+    "department": "",
+    "extraFields": {
+      "regNo": {
+        "label": "Reg.No",
+        "value": "24104072"
+      },
+      "rollNo": {
+        "label": "Roll No",
+        "value": "2422104"
+      },
+      "year": {
+        "label": "Year",
+        "value": "II"
+      },
+      "degree": {
+        "label": "Degree",
+        "value": "M.E"
+      },
+      "course": {
+        "label": "Course",
+        "value": "CSE"
+      }
+    },
+    "description": "zkbxvcG",
+    "document": null,
+    "originalFileName": null,
+    "status": "Pending",
+    "submittedAt": "2026-10-01T12:51:35.431Z"
+  },
+  {
+    "gid": 16,
+    "userType": "Student",
+    "name": "TEST USER",
+    "email": "test@example.com",
+    "gender": "",
+    "mobile": "9876543210",
+    "department": "",
+    "extraFields": {
+      "regNo": {
+        "label": "Reg.No",
+        "value": "24104099"
+      },
+      "rollNo": {
+        "label": "Roll No",
+        "value": "2422199"
+      },
+      "year": {
+        "label": "Year",
+        "value": "I"
+      },
+      "degree": {
+        "label": "Degree",
+        "value": "B.E"
+      },
+      "course": {
+        "label": "Course",
+        "value": "CSE"
+      }
+    },
+    "description": "Test grievance submission from automated verification",
+    "document": null,
+    "originalFileName": null,
+    "status": "Pending",
+    "submittedAt": "2026-10-01T13:59:35.897Z"
+  },
+  {
+    "gid": 17,
+    "userType": "Student",
+    "name": "LOCAL TEST USER",
+    "email": "localtest@example.com",
+    "gender": "",
+    "mobile": "9876543210",
+    "department": "",
+    "extraFields": {
+      "regNo": {
+        "label": "Reg.No",
+        "value": "24104001"
+      },
+      "rollNo": {
+        "label": "Roll No",
+        "value": "2422001"
+      },
+      "year": {
+        "label": "Year",
+        "value": "IV"
+      },
+      "degree": {
+        "label": "Degree",
+        "value": "B.E"
+      },
+      "course": {
+        "label": "Course",
+        "value": "CSE"
+      }
+    },
+    "description": "Overall localhost grievance test run",
+    "document": null,
+    "originalFileName": null,
+    "status": "Resolved",
+    "submittedAt": "2026-10-01T14:22:01.344Z",
+    "statusUpdatedAt": "2026-10-01T15:39:54.913Z"
+  },
+  {
+    "gid": 18,
+    "userType": "Other",
+    "name": "KARPAGAVALLI A",
+    "email": "24104072@nec.edu.in",
+    "gender": "Female",
+    "mobile": "8754308310",
+    "department": "",
+    "extraFields": {},
+    "description": "ZCdzfvdsbg",
+    "document": null,
+    "originalFileName": null,
+    "status": "Resolved",
+    "submittedAt": "2026-10-01T14:27:00.701Z",
+    "statusUpdatedAt": "2026-10-01T14:30:34.263Z"
+  },
+  {
+    "gid": 19,
+    "userType": "Student",
+    "name": "EMAIL VERIFY USER",
+    "email": "verifyuser@example.com",
+    "gender": "",
+    "mobile": "9876543210",
+    "department": "",
+    "extraFields": {
+      "regNo": {
+        "label": "Reg.No",
+        "value": "24104005"
+      },
+      "rollNo": {
+        "label": "Roll No",
+        "value": "2422005"
+      },
+      "year": {
+        "label": "Year",
+        "value": "IV"
+      },
+      "degree": {
+        "label": "Degree",
+        "value": "B.E"
+      },
+      "course": {
+        "label": "Course",
+        "value": "CSE"
+      }
+    },
+    "description": "Testing email notification dispatch flow",
+    "document": null,
+    "originalFileName": null,
+    "status": "Resolved",
+    "submittedAt": "2026-10-01T15:01:10.583Z",
+    "statusUpdatedAt": "2026-10-01T15:04:00.206Z"
+  },
+  {
+    "gid": 20,
+    "userType": "Other",
+    "name": "KARPAGAVALLI A",
+    "email": "24104072@nec.edu.in",
+    "gender": "Male",
+    "mobile": "8754308310",
+    "department": "",
+    "extraFields": {},
+    "description": ";likj",
+    "document": null,
+    "originalFileName": null,
+    "status": "Resolved",
+    "submittedAt": "2026-10-01T15:04:48.185Z",
+    "statusUpdatedAt": "2026-10-01T15:14:29.493Z"
+  },
+  {
+    "gid": 21,
+    "userType": "Student",
+    "name": "FINAL TEST VERIFIED",
+    "email": "velselvam269@gmail.com",
+    "gender": "",
+    "mobile": "9876543210",
+    "department": "",
+    "extraFields": {
+      "regNo": {
+        "label": "Reg.No",
+        "value": "24104077"
+      },
+      "rollNo": {
+        "label": "Roll No",
+        "value": "2422077"
+      },
+      "year": {
+        "label": "Year",
+        "value": "IV"
+      },
+      "degree": {
+        "label": "Degree",
+        "value": "B.E"
+      },
+      "course": {
+        "label": "Course",
+        "value": "CSE"
+      }
+    },
+    "description": "Live test grievance after updating to fresh Google App Password.",
+    "document": null,
+    "originalFileName": null,
+    "status": "Resolved",
+    "submittedAt": "2026-10-01T16:35:36.213Z",
+    "statusUpdatedAt": "2026-10-01T16:38:18.235Z"
+  },
+  {
+    "gid": 22,
+    "userType": "Other",
+    "name": "KARPAGAVALLI A CSE-2024",
+    "email": "24104072@nec.edu.in",
+    "gender": "Female",
+    "mobile": "8754308310",
+    "department": "",
+    "extraFields": {},
+    "description": "'.k,jmnhbvc",
+    "document": null,
+    "originalFileName": null,
+    "status": "Pending",
+    "submittedAt": "2026-10-01T16:43:53.750Z"
+  }
+]
