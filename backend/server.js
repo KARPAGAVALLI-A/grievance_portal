@@ -84,6 +84,9 @@ const transporterConfig = isGmail
         user: smtpUser,
         pass: smtpPass,
       },
+      connectionTimeout: 8000,
+      greetingTimeout: 5000,
+      socketTimeout: 10000,
     }
   : {
       host: smtpHost,
@@ -93,19 +96,28 @@ const transporterConfig = isGmail
         user: smtpUser,
         pass: smtpPass,
       },
+      connectionTimeout: 8000,
+      greetingTimeout: 5000,
+      socketTimeout: 10000,
     };
 
 const transporter = nodemailer.createTransport(transporterConfig);
 
-// Verify transporter at startup
-transporter.verify((error, success) => {
-  if (error) {
-    console.error("Transporter verification failed:", error.message);
-    console.error("Note: For Gmail, ensure you are using a valid 16-character Google App Password (not your normal Gmail password) and that 2-Step Verification is active.");
-  } else {
-    console.log("Email transporter is verified and ready to send emails.");
-  }
-});
+// Verify transporter at startup if configured
+if (smtpUser && smtpPass) {
+  transporter.verify((error, success) => {
+    if (error) {
+      console.warn("SMTP Transporter verification notice:", error.message);
+      console.warn("Note: Free hosting (e.g. Render) blocks outbound SMTP ports 25, 465, 587. For cloud hosting, use BREVO_API_KEY or a host without port blocks like Koyeb.");
+    } else {
+      console.log("Email transporter is verified and ready to send emails.");
+    }
+  });
+} else if (process.env.BREVO_API_KEY) {
+  console.log("Brevo API key detected. Emails will be sent over HTTPS (Port 443).");
+} else {
+  console.warn("Warning: Neither SMTP credentials nor BREVO_API_KEY is configured.");
+}
 
 function htmlToText(html) {
   return html
@@ -117,9 +129,67 @@ function htmlToText(html) {
 }
 
 async function sendMail({ to, subject, html, attachments = [] }) {
-  const fromAddress = process.env.MAIL_FROM || process.env.SMTP_USER || process.env.EMAIL_USER;
+  const fromAddress = process.env.MAIL_FROM || process.env.SMTP_USER || process.env.EMAIL_USER || "noreply@nec.edu.in";
   const replyToAddress = process.env.ADMIN_EMAIL || process.env.SMTP_USER || process.env.EMAIL_USER;
 
+  // 1. If Brevo API key is available, send via HTTPS REST API (Port 443 - NEVER blocked by Render/Railway firewalls!)
+  const brevoApiKey = (process.env.BREVO_API_KEY || process.env.SENDINBLUE_API_KEY || "").trim();
+  if (brevoApiKey) {
+    let senderName = "NEC Grievance Portal";
+    let senderEmail = (process.env.BREVO_SENDER_EMAIL || process.env.SMTP_USER || process.env.EMAIL_USER || "24104072@nec.edu.in").trim();
+    const nameMatch = fromAddress.match(/^"?(.*?)"?\s*<([^>]+)>/);
+    if (nameMatch) {
+      senderName = nameMatch[1];
+      if (!process.env.BREVO_SENDER_EMAIL) {
+        senderEmail = nameMatch[2].trim();
+      }
+    } else if (fromAddress.includes("@") && !process.env.BREVO_SENDER_EMAIL) {
+      senderEmail = fromAddress.trim();
+    }
+
+    const toList = to
+      .split(",")
+      .map(e => e.trim())
+      .filter(Boolean)
+      .map(email => ({ email }));
+
+    const payload = {
+      sender: { name: senderName, email: senderEmail },
+      to: toList,
+      subject,
+      htmlContent: html,
+      textContent: htmlToText(html),
+    };
+
+    if (replyToAddress) {
+      payload.replyTo = { email: replyToAddress.split(",")[0].trim() };
+    }
+
+    if (attachments && attachments.length > 0) {
+      payload.attachment = attachments.map(att => ({
+        name: att.filename,
+        content: fs.readFileSync(att.path).toString("base64"),
+      }));
+    }
+
+    const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "api-key": brevoApiKey,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Brevo HTTPS API failed (${res.status}): ${errText}`);
+    }
+
+    return await res.json();
+  }
+
+  // 2. Default: Nodemailer SMTP
   return transporter.sendMail({
     from: fromAddress,
     replyTo: replyToAddress,
@@ -292,30 +362,60 @@ app.post("/api/grievance", upload.single("document"), async (req, res) => {
     list.push(record);
     writeGrievances(list);
 
+    // Respond immediately to the frontend so the submit button is instantaneous
+    res.status(201).json({ message: "Grievance submitted successfully.", gid });
+
+    // Send emails asynchronously in the background so the user is not kept waiting
     const attachments = req.file
       ? [{ filename: req.file.originalname, path: req.file.path }]
       : [];
 
-    // 1. Send email immediately to Admin
-    try {
-      await sendAdminEmail(record, attachments);
-      console.log(`Admin email sent successfully for GID ${gid}`);
-    } catch (adminErr) {
-      console.error("Admin email failed:", adminErr.message || adminErr);
-    }
-
-    // 2. Send confirmation email immediately to User
-    try {
-      await sendUserEmail(record, attachments);
-      console.log(`User email sent successfully to ${email} for GID ${gid}`);
-    } catch (userErr) {
-      console.error("User email failed:", userErr.message || userErr);
-    }
-
-    res.status(201).json({ message: "Grievance submitted successfully.", gid });
+    Promise.allSettled([
+      sendAdminEmail(record, attachments)
+        .then(() => console.log(`Admin email sent successfully for GID ${gid}`))
+        .catch(adminErr => console.error("Admin email failed:", adminErr.message || adminErr)),
+      sendUserEmail(record, attachments)
+        .then(() => console.log(`User email sent successfully to ${email} for GID ${gid}`))
+        .catch(userErr => console.error("User email failed:", userErr.message || userErr)),
+    ]).catch(e => console.error("Email dispatch error:", e));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message || "Something went wrong. Please try again." });
+  }
+});
+
+// Diagnostic test endpoint to verify email delivery
+app.get("/api/test-email", async (req, res) => {
+  const targetEmail = req.query.to || process.env.ADMIN_EMAIL || process.env.SMTP_USER;
+  if (!targetEmail) {
+    return res.status(400).json({ error: "Please provide a target email: /api/test-email?to=your-email@example.com" });
+  }
+  try {
+    const result = await sendMail({
+      to: targetEmail,
+      subject: "Test Email - NEC Grievance Redressal Portal",
+      html: `
+        <h2>NEC Grievance Portal Email Test</h2>
+        <p>This is a test email sent from the grievance portal backend.</p>
+        <p>Timestamp: ${new Date().toISOString()}</p>
+        <p>Email service is active and working correctly!</p>
+      `,
+    });
+    res.json({
+      success: true,
+      message: `Test email successfully dispatched to ${targetEmail}`,
+      transport: process.env.BREVO_API_KEY ? "Brevo HTTPS API" : "SMTP Transporter",
+      result,
+    });
+  } catch (err) {
+    console.error("Test email failed:", err);
+    res.status(500).json({
+      success: false,
+      error: err.message,
+      hint: process.env.BREVO_API_KEY
+        ? "Verify your BREVO_API_KEY."
+        : "Free cloud hosts (like Render) block SMTP ports 25, 465, 587. Add BREVO_API_KEY in Render environment variables or host on Koyeb.",
+    });
   }
 });
 
