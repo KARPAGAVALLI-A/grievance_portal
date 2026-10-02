@@ -139,16 +139,11 @@ async function sendMail({ to, subject, html, attachments = [] }) {
   const brevoApiKey = (process.env.BREVO_API_KEY || process.env.SENDINBLUE_API_KEY || "").trim();
   if (brevoApiKey) {
     let senderName = "NEC Grievance Portal";
-    let senderEmail = (process.env.BREVO_SENDER_EMAIL || process.env.SMTP_USER || process.env.EMAIL_USER || "24104072@nec.edu.in").trim();
-    const nameMatch = fromAddress.match(/^"?(.*?)"?\s*<([^>]+)>/);
-    if (nameMatch) {
-      senderName = nameMatch[1];
-      if (!process.env.BREVO_SENDER_EMAIL) {
-        senderEmail = nameMatch[2].trim();
-      }
-    } else if (fromAddress.includes("@") && !process.env.BREVO_SENDER_EMAIL) {
-      senderEmail = fromAddress.trim();
-    }
+    const rawEmail = (process.env.BREVO_SENDER_EMAIL || process.env.SMTP_USER || process.env.EMAIL_USER || "24104072@nec.edu.in").trim();
+    // Use Brevo's verified sending domain (@12332950.brevosend.com) so college Google Workspace (@nec.edu.in)
+    // passes SPF & DKIM without triggering DMARC rejection on college student/faculty mailboxes!
+    const prefix = rawEmail.split("@")[0] || "24104072";
+    const senderEmail = `${prefix}@12332950.brevosend.com`;
 
     const toList = to
       .split(",")
