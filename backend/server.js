@@ -38,7 +38,10 @@ app.use(cors({
 
     // Allow any localhost or 127.0.0.1 port (e.g., 5173, 5174, 3000, etc.)
     const isLocalhost = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
-    if (isLocalhost || allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
+    // Allow any Vercel deployment domain (production, preview, custom subdomains)
+    const isVercel = /^https?:\/\/([a-zA-Z0-9-]+\.)*vercel\.app$/.test(origin);
+
+    if (isLocalhost || isVercel || allowedOrigins.includes("*") || allowedOrigins.includes(origin)) {
       return callback(null, true);
     }
     return callback(new Error(`Origin ${origin} not allowed by CORS`));
